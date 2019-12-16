@@ -1,3 +1,4 @@
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const path = require('path');
 
 const outdir = path.resolve(__dirname, '..', '..', '..', 'dist');
@@ -14,19 +15,13 @@ module.exports = function getLanguageServerConfig() {
     module: {
       rules: [
         {
-          test: /\.ts$/,
-          use: [
-            { loader: 'babel-loader', options: babelOptions },
-            { loader: 'ts-loader', options: { transpileOnly: true } },
-          ],
-          exclude: /node_modules|\.test\..+/i,
+          test: /\.(ts|js)$/,
+          use: [{
+            loader: 'babel-loader',
+            options: babelOptions
+          }],
+          exclude: /(node_modules|\.test\..+)/i,
         },
-        {
-          test: /\.js$/,
-          use: [{ loader: 'babel-loader', options: babelOptions }],
-          exclude: /\.test\..+/i,
-
-        }
       ],
     },
     resolve: {
@@ -47,6 +42,11 @@ module.exports = function getLanguageServerConfig() {
       oracledb: 'commonjs oracledb',
       '@sap/hana-client': 'commonjs @sap/hana-client'
     },
+    plugins: [
+      new ForkTsCheckerWebpackPlugin({
+        tsconfig: path.resolve(__dirname, 'tsconfig.json')
+      }),
+    ]
   };
 
   return config;

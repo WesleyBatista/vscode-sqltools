@@ -1,5 +1,5 @@
 import { ENV, VERSION } from '@sqltools/core/constants';
-import { runIfPropIsDefined } from '@sqltools/core/utils/decorators';
+import { runIfPropIsTrue } from '@sqltools/core/utils/decorators';
 import { numericVersion, Timer } from '@sqltools/core/utils';
 import logger from '@sqltools/core/log';
 import ConfigManager from '@sqltools/core/config-manager';
@@ -107,8 +107,7 @@ class Telemetry {
     log.extend('debug')('Telemetry disabled!');
   }
 
-  @runIfPropIsDefined('client')
-  public registerException(error: Error, data: { [key: string]: any } = {}) {
+  public registerException = runIfPropIsTrue('enabled', (error: Error, data: { [key: string]: any } = {}) => {
     if (!error) return;
     const errStr = (error && error.message ? error.message : '').toLowerCase();
     if (IGNORE_ERRORS_REGEX.test(errStr)) return;
@@ -122,14 +121,13 @@ class Telemetry {
       });
       Sentry.captureException(error);
     })
-  }
+  });
 
-  @runIfPropIsDefined('client')
-  public registerMessage(
+  public registerMessage = runIfPropIsTrue('enabled', (
     severity: 'info' | 'warn' | 'debug' | 'error' | 'critical' | 'fatal',
     message: string,
     value: string = 'Dismissed'
-  ): void {
+  ): void => {
     log.extend(severity.substr(0, 5).toLowerCase())(`Message: %s, value: %s`, message, value);
     let sev: Sentry.Severity;
     switch (severity) {
@@ -152,13 +150,12 @@ class Telemetry {
         break;
     }
     Sentry.captureMessage(this.prefixed(message), Sentry.Severity[sev]);
-  }
+  })
 
-  @runIfPropIsDefined('client')
-  public registerEvent(
+  public registerEvent = runIfPropIsTrue('enabled', (
     name: string,
     properties?: { [key: string]: any }
-  ): void {
+  ): void => {
     log.extend('debug')(`Event: %s\n%j`, name,  properties || '');
     Sentry.captureEvent({
       event_id: this.prefixed(name),
@@ -166,16 +163,15 @@ class Telemetry {
       extra: properties,
       timestamp: +new Date(),
     });
-  }
+  })
 
-  @runIfPropIsDefined('client')
-  public registerTime(timeKey: string, timer: Timer) {
+  public registerTime = runIfPropIsTrue('enabled', (timeKey: string, timer: Timer) => {
     const elapsed = timer.elapsed();
     log.extend('debug')('Time: %s %d ms', timeKey, elapsed);
     this.registerEvent(this.prefixed(`time:${timeKey}`), {
       value: elapsed,
     });
-  }
+  })
 }
 
 const telemetry = new Telemetry({

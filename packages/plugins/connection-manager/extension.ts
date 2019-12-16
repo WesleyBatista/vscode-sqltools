@@ -559,7 +559,7 @@ export default class ConnectionManagerPlugin implements IExtensionPlugin {
     [id: string]: {
       progress: Progress<any>,
       tokenSource: CancellationTokenSource,
-      interval: number,
+      interval: NodeJS.Timeout,
       resolve: Function,
       reject: Function,
     }

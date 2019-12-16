@@ -7,6 +7,7 @@ const getWebviewConfig = require('../ui/webpack.config');
 const getLanguageServerConfig = require('../language-server/webpack.config');
 const TerserJSPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const extPkgJson = require('./package.json');
 const corePkgJson = require('./../core/package.json');
@@ -36,6 +37,8 @@ const EXT_ID = 'sqltools';
 const rootdir = path.resolve(__dirname, '..', '..');
 const outdir = path.resolve(rootdir, '..', 'dist');
 
+const babelOptions = require(path.join(__dirname, '.babelrc'));
+
 function getExtensionConfig() {
   /** @type webpack.Configuration */
   let config = {
@@ -48,12 +51,19 @@ function getExtensionConfig() {
       rules: [
         {
           test: /\.ts?$/,
-          loaders: [{ loader: 'ts-loader', options: { transpileOnly: true } }],
-          exclude: /node_modules|\.test\..+/i,
+          loaders: [{
+            loader: 'babel-loader',
+            options: babelOptions
+          }],
+          exclude: /(node_modules|\.test\..+)/i,
+
         },
       ],
     },
     plugins: [
+      new ForkTsCheckerWebpackPlugin({
+        tsconfig: path.resolve(__dirname, 'tsconfig.json')
+      }),
       new CopyWebpackPlugin([
         {
           from: path.join(__dirname, 'package.json'),
@@ -115,8 +125,12 @@ function getExtensionConfig() {
 
 module.exports = () => {
   const isProduction = process.env.NODE_ENV !== 'development';
-  return [getLanguageServerConfig(), getExtensionConfig(), getWebviewConfig()].map(config => {
-    config.plugins = [
+  return [
+    getLanguageServerConfig(),
+    getExtensionConfig(),
+    getWebviewConfig()
+  ].map(config => {
+    config.plugins = (config.plugins || []).concat([
       new webpack.ProgressPlugin(),
       new webpack.DefinePlugin({
         'process.env.PRODUCT': JSON.stringify(config.name),
@@ -132,7 +146,7 @@ module.exports = () => {
         filename: isProduction ? '[file].map' : undefined,
         sourceRoot: path.relative(outdir, rootdir)}
       )
-    ].concat(config.plugins || []);
+    ]);
     config.node = {
       __dirname: false,
       __filename: false,

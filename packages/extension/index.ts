@@ -6,7 +6,7 @@ import { ISettings, IExtension, IExtensionPlugin, ICommandEvent, ICommandSuccess
 import { Timer } from '@sqltools/core/utils';
 import { commands, env as VSCodeEnv, ExtensionContext, version as VSCodeVersion, window, workspace, EventEmitter } from 'vscode';
 import ErrorHandler from './api/error-handler';
-import Utils from './api/utils';
+import { getlastRunInfo, updateLastRunInfo } from './api/utils';
 import { openExternal } from '@sqltools/vscode/utils';
 import SQLToolsLanguageClient from './language-client';
 import logger from '@sqltools/vscode/log';
@@ -137,7 +137,7 @@ export class SQLToolsExtension implements IExtension {
 
   private async displayReleaseNotesMessage() {
     try {
-      const current = Utils.getlastRunInfo();
+      const current = getlastRunInfo();
       const { lastNotificationDate = 0, updated } = current;
       const lastNDate = parseInt(new Date(lastNotificationDate).toISOString().substr(0, 10).replace(/\D/g, ''), 10);
       const today = parseInt(new Date().toISOString().substr(0, 10).replace(/\D/g, ''), 10);
@@ -149,7 +149,7 @@ export class SQLToolsExtension implements IExtension {
         || updatedRecently
       ) return;
 
-      Utils.updateLastRunInfo({ lastNotificationDate: +new Date() });
+      updateLastRunInfo({ lastNotificationDate: +new Date() });
 
       const moreInfo = 'More Info';
       const supportProject = 'Support This Project';

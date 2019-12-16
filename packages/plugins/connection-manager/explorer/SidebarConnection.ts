@@ -67,7 +67,7 @@ export default class SidebarConnection extends SidebarAbstractItem<SidebarResour
   constructor(context: ExtensionContext, public conn: IConnection) {
     super(conn.name, TreeItemCollapsibleState.None);
     try {
-      
+
       if (!SidebarConnection.icons.default) {
         SidebarConnection.icons.defaut = {
           active: {

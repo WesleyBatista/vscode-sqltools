@@ -4,8 +4,6 @@
     "esModuleInterop": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "experimentalDecorators": true,
-    "lib": ["es6"],
     "module": "commonjs",
     "noEmit": false,
     "outDir": "./dist",
@@ -13,7 +11,7 @@
     "resolveJsonModule": true,
     "sourceMap": false,
     "declaration": false,
-    "target": "es6",
+    "target": "esnext",
     "baseUrl": "./src"
   },
   "include": [

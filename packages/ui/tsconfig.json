@@ -4,16 +4,14 @@
     "esModuleInterop": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "experimentalDecorators": true,
     "jsx": "react",
-    "lib": ["es6", "dom"],
+    "lib": ["dom"],
     "module": "commonjs",
     "noEmit": true,
-    "outDir": "../../../dist/ui",
     "removeComments": true,
     "resolveJsonModule": true,
     "sourceMap": true,
-    "target": "es6",
+    "target": "esnext",
     "types": ["@sqltools/types"]
   }
 }

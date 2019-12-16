@@ -3,7 +3,7 @@ import { TableCompletionItem, TableColumnCompletionItem, TableCompletionItemFirs
 import { ILanguageServerPlugin, ILanguageServer } from '@sqltools/types';
 
 export default class IntellisensePlugin implements ILanguageServerPlugin {
-  private server: ILanguageServer;
+  private server: ILanguageServer<any>;
 
   private onCompletion = (params: CompletionParams): CompletionItem[] => {
     const { connectionInfo, lastUsedId } = this.server.store.getState();
@@ -31,7 +31,7 @@ export default class IntellisensePlugin implements ILanguageServerPlugin {
     return columns.map(TableColumnCompletionItem).concat(tables.map(TableCompletionItem));
   }
 
-  public register(server: ILanguageServer) {
+  public register(server: ILanguageServer<any>) {
     this.server = this.server || server;
     this.server.addOnInitializeHook(() => ({
       capabilities: {

@@ -4,7 +4,7 @@ module.exports = {
       require.resolve('@babel/preset-env'),
       {
         targets: {
-          node: '7'
+          electron: '6'
         }
       }
     ],
@@ -14,6 +14,5 @@ module.exports = {
     // require.resolve('@babel/plugin-proposal-numeric-separator'),
     require.resolve('@babel/plugin-proposal-class-properties'),
     // require.resolve('@babel/plugin-proposal-object-rest-spread'),
-    require.resolve('@babel/plugin-transform-spread'),
   ]
 }

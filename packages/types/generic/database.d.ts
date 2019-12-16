@@ -1,4 +1,4 @@
-export declare namespace NSDatabase {
+export declare module NSDatabase {
   export interface IDatabase {
     name: string;
   }

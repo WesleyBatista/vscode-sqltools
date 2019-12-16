@@ -1,5 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const outdir = path.resolve(__dirname, '..', '..', '..', 'dist');
 
@@ -19,12 +20,12 @@ module.exports = exports = function getWebviewConfig() {
     module: {
       rules: [
         {
-          test: /\.tsx?$/,
-          use: [
-            { loader: 'babel-loader', options: babelOptions },
-            { loader: 'ts-loader', options: { transpileOnly: true } },
-          ],
-          // exclude: /[\\/]node_modules[\\/]/,
+          test: /\.(ts|js)x?$/,
+          use: [{
+            loader: 'babel-loader',
+            options: babelOptions
+          }],
+          exclude: /(node_modules)/,
         },
         {
           test: /\.css/,
@@ -37,7 +38,7 @@ module.exports = exports = function getWebviewConfig() {
             },
             'css-loader'
           ],
-          // exclude: /[\\/]node_modules[\\/]/,
+          exclude: /(node_modules)/,
         },
         {
           test: /\.scss$/,
@@ -51,7 +52,7 @@ module.exports = exports = function getWebviewConfig() {
             'css-loader',
             'sass-loader'
           ],
-          // exclude: /[\\/]node_modules[\\/]/,
+          exclude: /(node_modules)/,
         },
         {
           test: /\.(png|svg|jpg|gif)$/,
@@ -98,6 +99,9 @@ module.exports = exports = function getWebviewConfig() {
       path: outdir,
     },
     plugins: [
+      new ForkTsCheckerWebpackPlugin({
+        tsconfig: path.resolve(__dirname, 'tsconfig.json')
+      }),
       new MiniCssExtractPlugin({
         filename: 'ui/[name].css',
         chunkFilename: 'ui/[name].css',

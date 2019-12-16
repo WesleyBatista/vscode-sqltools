@@ -4,15 +4,12 @@
     "esModuleInterop": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "experimentalDecorators": true,
-    "lib": ["es6"],
     "module": "commonjs",
     "noEmit": true,
-    "outDir": "../../../dist/extension",
     "removeComments": true,
     "resolveJsonModule": true,
     "sourceMap": true,
-    "target": "es6"
+    "target": "esnext"
   },
   "exclude": ["./test", "./node_modules", "./__mocks__", "./*.js"]
 }

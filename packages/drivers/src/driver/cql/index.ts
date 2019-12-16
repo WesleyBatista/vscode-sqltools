@@ -27,7 +27,7 @@ export default class CQL extends AbstractDriver<CassandraLib.Client, CassandraLi
         port: this.credentials.port,
       },
       socketOptions: {
-        connectTimeout: parseInt(`${this.credentials.connectionTimeout || 5}`, 10) * 1_000,
+        connectTimeout: parseInt(`${this.credentials.connectionTimeout || 5}`, 10) * 1000,
       },
       policies: {
         loadBalancing: new CassandraLib.policies.loadBalancing.RoundRobinPolicy(),
