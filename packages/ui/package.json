@@ -2,10 +2,31 @@
   "name": "@sqltools/ui",
   "version": "0.21.5",
   "description": "UI components for SQLTools",
-  "main": "noop.ts",
   "author": "Matheus Teixeira <me@mteixeira.me>",
   "license": "MIT",
   "private": true,
+  "results": "../../dist/ui/results.js",
+  "settings": "../../dist/ui/settings.js",
+  "scripts": {
+    "watch:results": "parcel watch ./screens/Results.tsx --target 'results' --no-hmr",
+    "build:results": "parcel build ./screens/Results.tsx --target 'results'",
+    "watch:settings": "parcel watch ./screens/Settings.tsx --target 'settings' --no-hmr",
+    "build:settings": "parcel build ./screens/Settings.tsx --target 'settings'",
+    "watch": "concurrently -k \"npm:watch:*\"",
+    "build": "concurrently -k \"npm:build:*\""
+  },
+  "targets": {
+    "results": {
+      "engines": {
+        "browsers": "last 1 Chrome version"
+      }
+    },
+    "settings": {
+      "engines": {
+        "browsers": "last 1 Chrome version"
+      }
+    }
+  },
   "dependencies": {
     "@devexpress/dx-react-core": "^2.0.1",
     "@devexpress/dx-react-grid": "^2.0.1",
@@ -26,8 +47,12 @@
     "@types/react": "^16.9.1",
     "@types/react-dom": "^16.8.5",
     "@types/styled-components": "^4.1.22",
+    "concurrently": "^5.0.1",
+    "cpx": "^1.5.0",
     "jest": "^24.5.0",
     "jest-cli": "^24.5.0",
+    "parcel": "^2.0.0-alpha.3.2",
+    "sass": "^1.23.7",
     "ts-jest": "^24.0.2",
     "typescript": "^3.7.3"
   }

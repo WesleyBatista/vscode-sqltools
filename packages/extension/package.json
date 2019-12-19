@@ -17,9 +17,6 @@
     "main": "./extension.js",
     "author": "Matheus Teixeira <me@mteixeira.me>",
     "private": true,
-    "engines": {
-        "vscode": "^1.36.0"
-    },
     "categories": [
         "Programming Languages",
         "Snippets",
@@ -1109,10 +1106,26 @@
             ]
         }
     },
+    "extensionMain": "./../../dist/extension.js",
+    "targets": {
+        "extensionMain": {
+            "engines": {
+                "electron": ">=6.x"
+            }
+        }
+    },
     "scripts": {
         "vscode:prepublish": "yarn run compile",
         "compile": "cross-env NODE_ENV=production ./node_modules/.bin/webpack",
-        "watch": "cross-env NODE_ENV=development ./node_modules/.bin/webpack --watch --info-verbosity verbose",
+        "watch-old": "cross-env NODE_ENV=development ./node_modules/.bin/webpack --watch --info-verbosity verbose",
+        "watch:main": "parcel watch index.ts --target 'extensionMain'  --no-hmr",
+        "build:main": "parcel build index.ts --target 'extensionMain' ",
+        "watch:manifest": "yarn run build:manifest -w",
+        "build:manifest": "cpx package.json ../../dist/. -c 'node ./build-tools/extension-manifest.js'",
+        "watch:assets": "yarn run build:assets -w",
+        "build:assets": "cpx '{icons,language}/**/*' ../../dist/.",
+        "build": "concurrently --raw -k \"npm:build:*\"",
+        "watch": "concurrently --raw -k \"npm:watch:*\"",
         "postversion": "vsce publish && git push && git push --tags"
     },
     "devDependencies": {
@@ -1120,7 +1133,9 @@
         "@types/jest": "^24.0.11",
         "@types/vscode": "^1.36.0",
         "babel-loader": "^8.0.4",
+        "concurrently": "^5.0.1",
         "copy-webpack-plugin": "^5.0.0",
+        "cpx": "^1.5.0",
         "cross-env": "^5.2.0",
         "css-loader": "^3.2.0",
         "dotenv": "^8.2.0",
@@ -1130,6 +1145,7 @@
         "mini-css-extract-plugin": "^0.8.0",
         "node-sass": "^4.11.0",
         "optimize-css-assets-webpack-plugin": "^5.0.3",
+        "parcel": "^2.0.0-alpha.3.2",
         "sass-loader": "^7.2.0",
         "terser-webpack-plugin": "^1.3.0",
         "ts-jest": "^24.0.2",
@@ -1143,5 +1159,8 @@
         "@sqltools/core": "*",
         "@sqltools/plugins": "*",
         "vscode-languageclient": "5.2.1"
+    },
+    "peerDependencies": {
+      "vscode": "*"
     }
 }

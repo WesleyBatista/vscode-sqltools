@@ -2,10 +2,22 @@
   "name": "@sqltools/language-server",
   "version": "0.21.5",
   "description": "SQLTools Language Server",
-  "main": "index.ts",
   "author": "Matheus Teixeira <me@mteixeira.me>",
   "license": "MIT",
   "private": true,
+  "main": "./../../dist/languageserver.js",
+  "source": ["src/index.ts"],
+  "targets": {
+    "main": {
+      "engines": {
+        "node": ">=6.x"
+      }
+    }
+  },
+  "scripts": {
+    "watch": "parcel watch package.json --no-hmr",
+    "build": "parcel build package.json"
+  },
   "dependencies": {
     "@sqltools/core": "*",
     "@sqltools/plugins": "*",
@@ -22,6 +34,7 @@
     "babel-loader": "^8.0.5",
     "jest": "^24.5.0",
     "jest-cli": "^24.5.0",
+    "parcel": "^2.0.0-alpha.3.2",
     "ts-jest": "^24.0.2",
     "typescript": "^3.7.3"
   }

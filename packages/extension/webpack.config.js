@@ -77,7 +77,7 @@ function getExtensionConfig() {
 
             return JSON.stringify(content, null, process.env.NODE_ENV === 'production' ? undefined : 2);
           },
-        },
+        }, // ok
         {
           from: path.join(__dirname, '..', '..', 'README.md'),
           to: path.join(outdir, 'README.md'),
@@ -87,14 +87,14 @@ function getExtensionConfig() {
             content = `# ${EXT_NAME} extension for Visual Studio Code\n${content.substring(hrPos).replace(/^<hr * \/>/, '')}`;
             return content;
           },
-        },
-        { from: path.join(__dirname, 'icons'), to: path.join(outdir, 'icons') },
-        { from: path.join(__dirname, '..', 'core', 'icons'), to: path.join(outdir, 'icons', 'driver') },
-        { from: path.join(__dirname, 'language'), to: path.join(outdir, 'language') },
-        { from: path.join(__dirname, '..', '..', 'static/icon.png'), to: path.join(outdir, 'static/icon.png') },
-        { from: path.join(__dirname, '..', '..', '.vscodeignore'), to: path.join(outdir, '.vscodeignore'), toType: 'file' },
-        { from: path.join(__dirname, '..', '..', 'LICENSE.md'), to: path.join(outdir, 'LICENSE.md') },
-        { from: path.join(__dirname, '..', '..', 'CHANGELOG.md'), to: path.join(outdir, 'CHANGELOG.md') },
+        }, // ok
+        { from: path.join(__dirname, 'icons'), to: path.join(outdir, 'icons') }, // ok
+        { from: path.join(__dirname, '..', 'core', 'icons'), to: path.join(outdir, 'icons', 'driver') }, // TODO
+        { from: path.join(__dirname, 'language'), to: path.join(outdir, 'language') }, // ok
+        { from: path.join(__dirname, '..', '..', 'static/icon.png'), to: path.join(outdir, 'static/icon.png') }, // ok
+        { from: path.join(__dirname, '..', '..', '.vscodeignore'), to: path.join(outdir, '.vscodeignore'), toType: 'file' }, // ok
+        { from: path.join(__dirname, '..', '..', 'LICENSE.md'), to: path.join(outdir, 'LICENSE.md') }, // ok
+        { from: path.join(__dirname, '..', '..', 'CHANGELOG.md'), to: path.join(outdir, 'CHANGELOG.md') }, // ok
       ]),
     ],
     resolve: {
